@@ -4,6 +4,7 @@ counter_0001_0001, counter_0010_0001, counter_0100_0001, counter_1000_0001 = 0, 
 counter_0001_0010, counter_0010_0010, counter_0100_0010, counter_1000_0010 = 0, 0, 0, 0
 counter_0001_0100, counter_0010_0100, counter_0100_0100, counter_1000_0100 = 0, 0, 0, 0
 counter_0001_1000, counter_0010_1000, counter_0100_1000, counter_1000_1000 = 0, 0, 0, 0
+counter_block_1, counter_block_2, counter_block_3, counter_block_4 = 0, 0, 0, 0
 
 s_box_dict = {
     "0000": "1110",
@@ -54,6 +55,7 @@ def find_pattern(pattern, number):
     global counter_0001_0010, counter_0010_0010, counter_0100_0010, counter_1000_0010
     global counter_0001_0100, counter_0010_0100, counter_0100_0100, counter_1000_0100
     global counter_0001_1000, counter_0010_1000, counter_0100_1000, counter_1000_1000
+    global counter_block_1, counter_block_2, counter_block_3, counter_block_4
 
     match1 = regex.search(reg1, number)
     match2 = regex.search(reg2, number)
@@ -108,6 +110,7 @@ def cipher(block, pattern, number):
 
 
 def main():
+    total_counter = 0
     for i in range(4096):
         bin_str_i = str(bin(i))
         gen_number = ""
@@ -117,6 +120,7 @@ def main():
         for block in range(4):
             for pattern in ["1000", "0100", "0010", "0001"]:
                 input_number = gen_number[0:block * 4] + pattern + gen_number[block * 4:]
+                total_counter += 1
                 cipher(block, pattern, input_number)
                 # print(input_number)
 
@@ -143,6 +147,29 @@ def main():
           + "0010: " + str(counter_1000_0010) + " times,\n"
           + "0100: " + str(counter_1000_0100) + " times,\n"
           + "1000: " + str(counter_1000_1000) + " times.\n")
+
+    print("There were " + str(total_counter) + " numbers that were generated.\n"
+          "There were " + str(counter_block_1) + " generated numbers that had a pattern in block 1.\n"
+          "There were " + str(counter_block_2) + " generated numbers that had a pattern in block 2.\n"
+          "There were " + str(counter_block_3) + " generated numbers that had a pattern in block 3.\n"
+          "There were " + str(counter_block_4) + " generated numbers that had a pattern in block 4.\n"
+          "That means the probabilities are:\n"
+          + "0001 - 0001: " + str(counter_0001_0001 / counter_block_1) + "\n"
+          + "0001 - 0010: " + str(counter_0001_0010 / counter_block_1) + "\n"
+          + "0001 - 0100: " + str(counter_0001_0100 / counter_block_1) + "\n"
+          + "0001 - 1000: " + str(counter_0001_1000 / counter_block_1) + "\n"
+          + "0010 - 0001: " + str(counter_0010_0001 / counter_block_2) + "\n"
+          + "0010 - 0010: " + str(counter_0010_0010 / counter_block_2) + "\n"
+          + "0010 - 0100: " + str(counter_0010_0100 / counter_block_2) + "\n"
+          + "0010 - 1000: " + str(counter_0010_1000 / counter_block_2) + "\n"
+          + "0100 - 0001: " + str(counter_0100_0001 / counter_block_3) + "\n"
+          + "0100 - 0010: " + str(counter_0100_0010 / counter_block_3) + "\n"
+          + "0100 - 0100: " + str(counter_0100_0100 / counter_block_3) + "\n"
+          + "0100 - 1000: " + str(counter_0100_1000 / counter_block_3) + "\n"
+          + "1000 - 0001: " + str(counter_1000_0001 / counter_block_4) + "\n"
+          + "1000 - 0010: " + str(counter_1000_0010 / counter_block_4) + "\n"
+          + "1000 - 0100: " + str(counter_1000_0100 / counter_block_4) + "\n"
+          + "1000 - 1000: " + str(counter_1000_1000 / counter_block_4) + "\n")
 
 
 if __name__ == "__main__":
